@@ -1,23 +1,28 @@
 # ========== Comando para crear y levantar docker
 # docker build -t cedrus-db .
-# docker run -p 10000:10000 cedrus-db
+# docker run --env-file .env -p 10000:10000 cedrus-db
 # ========== 
 
-# Usa una imagen base de Python 3.11
+# Imagen base
 FROM python:3.11
 
+# Establecer el directorio de trabajo
 WORKDIR /app
 
+# Copiar archivos al contenedor
 COPY . /app
 
-# Instala dependencias Python
+# Instalar dependencias Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Instala rclone
+# Instalar rclone
 RUN curl https://rclone.org/install.sh | bash
 
-# Exponer el puerto
+# Dar permisos al script de inicio
+RUN chmod +x /app/Files/Scripts/bash/start.sh
+
+# Exponer el puerto de la API
 EXPOSE 10000
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:10000", "app:app"]
-
+# Comando por defecto
+CMD ["/app/Files/Scripts/bash/start.sh"]

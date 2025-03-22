@@ -1,23 +1,19 @@
-import os, sys
-from dotenv import load_dotenv
-from flask import Flask, request
-from flask_restful import Api
-from flask_cors import CORS
+from flask import Flask, jsonify
+from Files.Scripts.python.inactivity_tracker import update_last_access
 
-# ===== Validaciones iniciales
-load_dotenv()
-sys.stdout = sys.stderr
-
-# ===== Configuracion API
 app = Flask(__name__)
-CORS(app)
-api = Api(app)
 
+# Middleware para actualizar la hora del último acceso en cada request
+@app.before_request
+def before_request():
+    update_last_access()
 
-# ===== Endpoints
-
+# Ruta principal para verificar que el servidor está activo
+@app.route("/")
+def index():
+    return {"message": "API en funcionamiento", "status": "ok"},200
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=10000)
+    app.run(host="0.0.0.0", port=10000)

@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-from Files.Scripts.python.inactivity_tracker import update_last_access
+from flask import Flask
+from Files.Scripts.python.scheduler.inactivity_tracker import update_last_access
 
 app = Flask(__name__)
 

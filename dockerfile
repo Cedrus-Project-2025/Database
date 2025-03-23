@@ -1,10 +1,13 @@
 # ========== Comando para crear y levantar docker
-# docker build -t cedrus-db .
-# docker run --env-file .env -p 10000:10000 cedrus-db
+# clear; docker build -t cedrus-db .; docker run --name CedusDB --env-file .env -p 10000:10000 cedrus-db
 # ========== 
+
 
 # Imagen base
 FROM python:3.11
+
+# Actualiza los paquetes e instala nano
+RUN apt-get update && apt-get install -y nano && apt-get clean
 
 # Establecer el directorio de trabajo
 WORKDIR /app

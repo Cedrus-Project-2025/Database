@@ -13,14 +13,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && apt-get clean
 
-# Instalar Rclone manualmente (compatible con Render)
-RUN curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
-    unzip rclone-current-linux-amd64.zip && \
-    cd rclone-*-linux-amd64 && \
-    cp rclone /usr/local/bin/ && \
-    chmod 755 /usr/local/bin/rclone && \
-    cd .. && rm -rf rclone-*-linux-amd64 rclone-current-linux-amd64.zip
-
 # Crear directorio de trabajo
 WORKDIR /app
 
@@ -30,10 +22,11 @@ COPY . /app
 # Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Dar permisos al script de inicio
-RUN chmod +x /app/Files/Scripts/bash/start.sh
+# Dar permisos a los scripts
+RUN chmod +x /app/Files/Scripts/bash/start.sh \
+    && chmod +x /app/Files/Scripts/bash/install_rclone.sh
 
-# Exponer el puerto para Render (Render detecta automáticamente el puerto)
+# Exponer el puerto para Render
 EXPOSE 10000
 
 # Comando por defecto

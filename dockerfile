@@ -6,13 +6,13 @@
 # Imagen base
 FROM python:3.11
 
-# Actualiza los paquetes e instala nano
-RUN apt-get update && apt-get install -y nano && apt-get clean
+# Instala nano y dependencias necesarias
+RUN apt-get update && apt-get install -y nano curl && apt-get clean
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos al contenedor
+# Copiar archivos de la app
 COPY . /app
 
 # Instalar dependencias Python
@@ -27,5 +27,5 @@ RUN chmod +x /app/Files/Scripts/bash/start.sh
 # Exponer el puerto de la API
 EXPOSE 10000
 
-# Comando por defecto
+# Comando de inicio
 CMD ["/app/Files/Scripts/bash/start.sh"]

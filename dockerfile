@@ -28,4 +28,4 @@ RUN chmod +x /app/Files/Scripts/bash/start.sh
 EXPOSE 10000
 
 # Comando de inicio
-CMD ["/app/Files/Scripts/bash/start.sh"]
+CMD ["./Files/Scripts/bash/start.sh"]

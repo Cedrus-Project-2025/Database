@@ -6,26 +6,35 @@
 # Imagen base
 FROM python:3.11
 
-# Instala nano y dependencias necesarias
-RUN apt-get update && apt-get install -y nano curl && apt-get clean
+# Instalar herramientas necesarias
+RUN apt-get update && apt-get install -y \
+    nano \
+    curl \
+    unzip \
+    && apt-get clean
 
-# Establecer el directorio de trabajo
+# Instalar Rclone manualmente (compatible con Render)
+RUN curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
+    unzip rclone-current-linux-amd64.zip && \
+    cd rclone-*-linux-amd64 && \
+    cp rclone /usr/local/bin/ && \
+    chmod 755 /usr/local/bin/rclone && \
+    cd .. && rm -rf rclone-*-linux-amd64 rclone-current-linux-amd64.zip
+
+# Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de la app
+# Copiar archivos al contenedor
 COPY . /app
 
-# Instalar dependencias Python
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Instalar rclone
-RUN curl https://rclone.org/install.sh | bash
 
 # Dar permisos al script de inicio
 RUN chmod +x /app/Files/Scripts/bash/start.sh
 
-# Exponer el puerto de la API
+# Exponer el puerto para Render (Render detecta automáticamente el puerto)
 EXPOSE 10000
 
-# Comando de inicio
+# Comando por defecto
 CMD ["./Files/Scripts/bash/start.sh"]

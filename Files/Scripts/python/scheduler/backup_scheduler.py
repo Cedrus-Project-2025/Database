@@ -3,7 +3,7 @@ from inactivity_tracker import is_time_to_backup
 
 # =============== RUTAS ===============
 updt_file_path = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
     "Temp",
     "update_file.txt"
 )

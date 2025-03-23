@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 
 # =============== RUTAS ===============
 time_file_path = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
     "Temp",
     "time_file.txt"
 )
 updt_file_path = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
     "Temp",
     "update_file.txt"
 )

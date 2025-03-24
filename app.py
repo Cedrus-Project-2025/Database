@@ -5,7 +5,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 from Files.Scripts.python.scheduler.inactivity_tracker import update_last_access
-from Files.Scripts.python.endpoints.Start import Start_Rclone
+from Files.Scripts.python.endpoints.validar_servicio import Start_Rclone
 
 # ===== Validaciones iniciales
 load_dotenv()

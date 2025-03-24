@@ -1,34 +1,48 @@
 #!/bin/bash
 
-echo "Instalando Rclone si no está presente..."
+echo "Instalando Rclone en ./installation si no está presente..."
 
-# Verifica si rclone ya está instalado
-if command -v rclone &> /dev/null; then
-    echo "Rclone ya está instalado."
-else
+# Ruta personalizada de instalación
+INSTALL_DIR="./installation"
+RCLONE_BIN="$INSTALL_DIR/rclone"
+
+# Verifica si rclone ya está instalado en el directorio deseado
+if [ ! -f "$RCLONE_BIN" ]; then
     echo "Descargando e instalando Rclone..."
     curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip
     unzip rclone-current-linux-amd64.zip
-    cd rclone-*-linux-amd64
-    cp rclone /usr/local/bin/
-    chmod 755 /usr/local/bin/rclone
+    cd rclone-*-linux-amd64 || exit 1
+    mkdir -p "$INSTALL_DIR"
+    cp rclone "$RCLONE_BIN"
+    chmod 755 "$RCLONE_BIN"
     cd ..
     rm -rf rclone-*-linux-amd64 rclone-current-linux-amd64.zip
-    echo "Rclone instalado correctamente."
+    echo "Rclone instalado correctamente en $RCLONE_BIN."
+else
+    echo "Rclone ya está instalado en $RCLONE_BIN."
 fi
 
 # Crear carpeta de configuración
-export RCLONE_CONFIG=./.config/rclone/rclone.conf
-mkdir -p ./.config/rclone
+export RCLONE_CONFIG="./.config/rclone/rclone.conf"
+mkdir -p "$(dirname "$RCLONE_CONFIG")"
 
-# Generar archivo de configuración
-echo "Configurando Rclone..."
-cat <<EOF > "$RCLONE_CONFIG"
+# Generar archivo de configuración (si no existe)
+if [ ! -f "$RCLONE_CONFIG" ]; then
+    echo "Configurando Rclone en $RCLONE_CONFIG..."
+    cat <<EOF > "$RCLONE_CONFIG"
 ${RCLONE_name}
 type = ${RCLONE_type}
 scope = ${RCLONE_scope}
 token = ${RCLONE_token}
 team_drive = 
 EOF
+    echo "Archivo de configuración creado."
+else
+    echo "Archivo de configuración ya existe en $RCLONE_CONFIG."
+fi
 
-echo "Configuración de Rclone lista en $RCLONE_CONFIG"
+# Agregar ./installation al PATH temporalmente
+export PATH="$INSTALL_DIR:$PATH"
+echo "PATH temporal actualizado para usar Rclone desde $INSTALL_DIR"
+echo "Versión de Rclone instalada:"
+rclone version

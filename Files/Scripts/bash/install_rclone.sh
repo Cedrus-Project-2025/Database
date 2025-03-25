@@ -3,7 +3,7 @@
 echo "Instalando Rclone en ./installation si no está presente..."
 
 # Ruta personalizada de instalación
-INSTALL_DIR="./installation"
+INSTALL_DIR="/opt/render/project/src/./installation"
 RCLONE_BIN="$INSTALL_DIR/rclone"
 
 # Verifica si rclone ya está instalado en el directorio deseado

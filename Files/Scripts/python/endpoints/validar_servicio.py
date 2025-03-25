@@ -34,9 +34,15 @@ class Start_Rclone(Resource):
             )
 
             if down_result.returncode != 0:
+                config_path = os.path.join(location_path,'.config','rclone','rclone.conf')
+                if not(os.path.isfile(config_path)): config_str = 'No se encontró el archivo'
+                else:
+                    with open(config_path,'r') as file: config_str = file.read()
+                
                 return {
                     "status": "failed",
                     "reason": "Download Databases script failed.",
+                    ".config" : config_str,
                     "details": down_result.stderr.strip()
                 }, 500
 

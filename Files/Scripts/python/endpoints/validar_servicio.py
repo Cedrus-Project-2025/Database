@@ -40,10 +40,11 @@ class Start_Rclone(Resource):
                     with open(config_path,'r') as file: config_str = file.read()
                 
                 return {
-                    "status": "failed",
-                    "reason": "Download Databases script failed.",
+                    "status"  : "failed",
+                    "reason"  : "Download Databases script failed.",
                     ".config" : config_str,
-                    "details": down_result.stderr.strip()
+                    "details" : down_result.stderr.strip(),
+                    "log"     : down_result.stdout.strip()
                 }, 500
 
             # ===== Confirmación

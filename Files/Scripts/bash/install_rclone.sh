@@ -14,7 +14,7 @@ if [ ! -f "$RCLONE_BIN" ]; then
     cd rclone-*-linux-amd64 || exit 1
     mkdir -p "$INSTALL_DIR"
     cp rclone "$RCLONE_BIN"
-    chmod 755 "$RCLONE_BIN"
+    chmod +x "$RCLONE_BIN" 
     cd ..
     rm -rf rclone-*-linux-amd64 rclone-current-linux-amd64.zip
     echo "Rclone instalado correctamente en $RCLONE_BIN."
@@ -41,8 +41,9 @@ else
     echo "Archivo de configuración ya existe en $RCLONE_CONFIG."
 fi
 
-# Agregar ./installation al PATH temporalmente
+# Agregar ./installation al PATH temporalmente (aunque no se usará en Python)
 export PATH="$INSTALL_DIR:$PATH"
 echo "PATH temporal actualizado para usar Rclone desde $INSTALL_DIR"
-echo "Versión de Rclone instalada:"
-rclone version
+
+# Verificar que Rclone se instaló correctamente
+"$RCLONE_BIN" version

@@ -2,8 +2,8 @@
 
 # Variables de configuración
 RCLONE_BIN="/opt/render/project/src/./installation/rclone"  # Ruta personalizada de Rclone
-RCLONE_REMOTE_NAME="${RCLONE_name}"                         # Nombre del remoto configurado en Rclone
-DRIVE_FOLDER="/UPY/Estancias Enero 2025/cedrus-db"          # Ruta en Google Drive
+RCLONE_REMOTE_NAME="drive"                                  # Nombre del remoto configurado en Rclone
+DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"          # Ruta en Google Drive
 LOCAL_DEST="/opt/render/project/src/./Files/Data"           # Ruta de destino local
 
 # Verificar si Rclone está instalado

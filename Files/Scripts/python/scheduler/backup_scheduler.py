@@ -32,7 +32,7 @@ def monitor_and_backup():
 
             # Ejecuta rclone usando la ruta absoluta
             result = subprocess.run([
-                RCLONE_BIN, "copy", "/app/Files/Data", "gdrive:/UPY/Estancias Enero 2025/cedrus-db", "--update"
+                RCLONE_BIN, "copy", "/app/Files/Data", "drive:/UPY/Estancias_Enero_2025/cedrus_db", "--update"
             ])
 
             if result.returncode == 0:

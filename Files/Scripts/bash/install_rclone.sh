@@ -30,7 +30,7 @@ mkdir -p "$(dirname "$RCLONE_CONFIG")"
 if [ ! -f "$RCLONE_CONFIG" ]; then
     echo "Configurando Rclone en $RCLONE_CONFIG..."
     cat <<EOF > "$RCLONE_CONFIG"
-${RCLONE_name}
+[drive]
 type = ${RCLONE_type}
 scope = ${RCLONE_scope}
 token = ${RCLONE_token}

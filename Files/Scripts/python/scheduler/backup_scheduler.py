@@ -2,7 +2,7 @@ import time, subprocess, os
 from inactivity_tracker import is_time_to_backup
 
 # =============== RUTAS ===============
-location_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))))
+location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 updt_file_path = os.path.join(
     location_path,
     "Temp",

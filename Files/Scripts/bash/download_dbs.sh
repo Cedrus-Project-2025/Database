@@ -13,6 +13,10 @@ if [ ! -f "$RCLONE_BIN" ]; then
     exit 1
 fi
 
+# Verificar dónde está buscando la configuración de Rclone
+echo "Ubicación de configuración de Rclone utilizada por $RCLONE_BIN:"
+"$RCLONE_BIN" config file
+
 # Crear la carpeta de destino si no existe
 mkdir -p "$LOCAL_DEST"
 

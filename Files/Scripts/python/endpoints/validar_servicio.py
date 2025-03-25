@@ -6,27 +6,44 @@ location_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(
 class Start_Rclone(Resource):
     def get(self):
         try:
-            # Ruta completa al script
-            script_path = os.path.join(location_path, 'Files','Scripts','bash','install_rclone.sh')
-            script_path = os.path.abspath(script_path)
+            # ===== Ruta completa al script
+            inst_script_path = os.path.join(location_path, 'Files','Scripts','bash','install_rclone.sh')
+            inst_script_path = os.path.abspath(inst_script_path)
+            down_script_path = os.path.join(location_path, 'Files','Scripts','bash','download_dbs.sh')
+            down_script_path = os.path.abspath(down_script_path)
 
-            # Ejecutar script de instalación
-            result = subprocess.run(
-                ["bash", script_path],
+            # ===== Ejecutar script de instalación
+            inst_result = subprocess.run(
+                ["bash", inst_script_path],
                 capture_output=True,
                 text=True
             )
 
-            if result.returncode != 0:
+            if inst_result.returncode != 0:
                 return {
                     "status": "failed",
                     "reason": "Rclone installation script failed.",
-                    "details": result.stderr.strip()
+                    "details": inst_result.stderr.strip()
                 }, 500
 
+            # ===== Ejecutar script de descarga de bases de datos
+            down_result = subprocess.run(
+                ["bash",down_script_path],
+                capture_output=True,
+                text=True
+            )
+
+            if down_result.returncode != 0:
+                return {
+                    "status": "failed",
+                    "reason": "Download Databases script failed.",
+                    "details": down_result.stderr.strip()
+                }, 500
+
+            # ===== Confirmación
             return {
                 "status": "Rclone installed and configured!",
-                "log": result.stdout.strip(),
+                "log": inst_result.stdout.strip(),
                 "base_dir":f"{os.listdir(location_path)}",
                 "data_dir":f"{os.listdir(os.path.join(location_path,'Files','Data'))}",
                 "temp_dir":f"{os.listdir(os.path.join(location_path,'Files','Temp'))}",

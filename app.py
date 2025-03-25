@@ -15,6 +15,7 @@ sys.stdout = sys.stderr
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
+Start_Rclone().get()
 
 # ===== Middleware para actualizar la hora del último acceso en cada request
 @app.before_request

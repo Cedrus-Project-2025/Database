@@ -11,7 +11,7 @@ updt_file_path = os.path.join(
     "Temp",
     "update_file.txt"
 )
-RCLONE_BIN = os.path.join(location_path, "./installation/rclone")
+RCLONE_BIN = os.path.join(location_path, "installation/rclone")
 
 
 

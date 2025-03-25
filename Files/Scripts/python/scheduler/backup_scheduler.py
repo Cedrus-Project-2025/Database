@@ -4,7 +4,7 @@ from inactivity_tracker import is_time_to_backup
 # =============== RUTAS ===============
 location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 
-print(f"__file__: {__file__}\nlocation_path backup: {location_path}")
+print(f"location_path backup {location_path}: {os.listdir(location_path)}")
 
 updt_file_path = os.path.join(
     location_path,

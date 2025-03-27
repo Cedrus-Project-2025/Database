@@ -4,8 +4,11 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 
+# ===== General
 from Files.Scripts.python.scheduler.inactivity_tracker import update_last_access
 from Files.Scripts.python.endpoints.validar_servicio import Start_Rclone
+from Files.Scripts.python.endpoints.General.tablas import Tables
+
 
 # ===== Validaciones iniciales
 load_dotenv()
@@ -23,7 +26,19 @@ def before_request():
     update_last_access()
 
 # ===== Endpoints
-api.add_resource(Start_Rclone, '/start')
+# General
+api.add_resource(Start_Rclone, '/start', endpoint = 'start')
+api.add_resource(Tables,       '/general/tables', endpoint = 'general_tables')
+
+# Business
+api.add_resource(Tables,       '/business/tables', endpoint = 'business_tables')
+
+# Chat
+api.add_resource(Tables,       '/chat/tables', endpoint = 'chat_tables')
+
+# Web
+api.add_resource(Tables,       '/web/tables', endpoint = 'web_tables')
+
 
 
 if __name__ == "__main__":

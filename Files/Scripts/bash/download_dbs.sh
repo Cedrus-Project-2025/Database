@@ -1,19 +1,17 @@
 #!/bin/bash
 
-# Variables de configuración
-RCLONE_BIN="/opt/render/project/src/./installation/rclone"           # Ruta personalizada de Rclone
-RCLONE_CONFIG="/opt/render/project/src/./.config/rclone/rclone.conf" # Ruta de las configuraciones de Rclone
-RCLONE_REMOTE_NAME="drive"                                           # Nombre del remoto configurado en Rclone
-DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"                   # Ruta en Google Drive
-LOCAL_DEST="/opt/render/project/src/./Files/Data"                    # Ruta de destino local
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+RCLONE_BIN="$SCRIPT_DIR/../../Temp/installation/rclone"
+RCLONE_CONFIG="$SCRIPT_DIR/../../Temp/.config/rclone/rclone.conf"
+RCLONE_REMOTE_NAME="drive"
+DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"
+LOCAL_DEST="$SCRIPT_DIR/../../Data"
 
 if [ ! -f "$RCLONE_BIN" ]; then
     echo "Error: Rclone no está instalado en $RCLONE_BIN."
     exit 1
 fi
 
-# Especificar explícitamente archivo de configuración
-echo "Ubicación del archivo de configuración: $RCLONE_CONFIG"
 mkdir -p "$LOCAL_DEST"
 
 echo "Descargando archivos desde Google Drive..."

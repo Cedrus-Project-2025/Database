@@ -1,28 +1,23 @@
 #!/bin/bash
 
 # Variables de configuración
-RCLONE_BIN="/opt/render/project/src/./installation/rclone"  # Ruta personalizada de Rclone
-RCLONE_REMOTE_NAME="drive"                                  # Nombre del remoto configurado en Rclone
-DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"          # Ruta en Google Drive
-LOCAL_DEST="/opt/render/project/src/./Files/Data"           # Ruta de destino local
+RCLONE_BIN="/opt/render/project/src/./installation/rclone"           # Ruta personalizada de Rclone
+RCLONE_CONFIG="/opt/render/project/src/./.config/rclone/rclone.conf" # Ruta de las configuraciones de Rclone
+RCLONE_REMOTE_NAME="drive"                                           # Nombre del remoto configurado en Rclone
+DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"                   # Ruta en Google Drive
+LOCAL_DEST="/opt/render/project/src/./Files/Data"                    # Ruta de destino local
 
-# Verificar si Rclone está instalado
-echo "Verificando Rclone en $RCLONE_BIN..."
 if [ ! -f "$RCLONE_BIN" ]; then
-    echo "Error: Rclone no está instalado en $RCLONE_BIN. Por favor, instálalo antes de ejecutar este script."
+    echo "Error: Rclone no está instalado en $RCLONE_BIN."
     exit 1
 fi
 
-# Verificar dónde está buscando la configuración de Rclone
-echo "Ubicación de configuración de Rclone utilizada por $RCLONE_BIN:"
-"$RCLONE_BIN" config file
-
-# Crear la carpeta de destino si no existe
+# Especificar explícitamente archivo de configuración
+echo "Ubicación del archivo de configuración: $RCLONE_CONFIG"
 mkdir -p "$LOCAL_DEST"
 
-# Descargar los archivos desde Google Drive
 echo "Descargando archivos desde Google Drive..."
-"$RCLONE_BIN" copy "$RCLONE_REMOTE_NAME:$DRIVE_FOLDER" "$LOCAL_DEST" --progress
+"$RCLONE_BIN" --config "$RCLONE_CONFIG" copy "$RCLONE_REMOTE_NAME:$DRIVE_FOLDER" "$LOCAL_DEST" --progress
 
 if [ $? -eq 0 ]; then
     echo "Descarga completada en $LOCAL_DEST."

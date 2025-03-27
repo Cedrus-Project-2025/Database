@@ -29,8 +29,9 @@ class Start_Rclone(Resource):
             # ===== Ejecutar script de descarga de bases de datos
             down_result = subprocess.run(
                 ["bash",down_script_path],
-                capture_output=True,
-                text=True
+                capture_output = True,
+                text           = True,
+                cwd            = location_path
             )
 
             if down_result.returncode != 0:

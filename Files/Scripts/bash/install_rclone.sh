@@ -23,7 +23,7 @@ else
 fi
 
 # Crear carpeta de configuración
-export RCLONE_CONFIG="./.config/rclone/rclone.conf"
+export RCLONE_CONFIG="/opt/render/project/src/./.config/rclone/rclone.conf"
 mkdir -p "$(dirname "$RCLONE_CONFIG")"
 
 # Generar archivo de configuración (si no existe)

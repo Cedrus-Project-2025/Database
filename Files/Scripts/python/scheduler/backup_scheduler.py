@@ -39,6 +39,7 @@ def monitor_and_backup():
                     file.write("False")
             else:
                 print(f"Error durante el backup. Código de error: {result.returncode}")
+                print(f"result.stdout.strip(): {result.stdout.strip()}\nresult.stderr.strip(): {result.stderr.strip()}")
 
             time.sleep(60)
 

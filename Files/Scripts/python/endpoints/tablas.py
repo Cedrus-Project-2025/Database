@@ -21,72 +21,40 @@ class Tables(Resource):
     def get(self):
         try:
             # ===== Peticion
-            data = dict(request.json) if request.is_json else dict()
             endpoint = request.endpoint
             
             # ===== Valores Peticion
             db_name = self.__get_db_name(endpoint)
 
-            # Columnas
-            cols = data.get('columnas',['all',])
-            if type(cols) != list: raise RuntimeError("El valor del arg 'columnas' tiene que ser una lista.")
-            
-            if len(cols) == 1 and cols[0] == 'all': cols = '*'
-            elif len(cols) == 1: cols = f"{cols[0]}"
-            elif len(cols) > 1: cols = ', '.join(cols)
-            else: raise RuntimeError("El valor del arg 'columnas' no puede estar vacio. Tiene que tener el nombre de las columnas a revisar o, en su defecto, omitir arg para mostrar todas las columnas.")
-
-            # Nombre tabla
-            tb_name = data.get('nombre_tabla',None)
-            if tb_name == None: raise KeyError("No se encontró el arg 'nombre_tabla' en la petición.")
-            elif type(tb_name) != str: raise RuntimeError("El valor del arg 'nombre_tabla' no puede ser diferente a un string.")
-            
-            # Condiciones
-            conditions = data.get('condiciones',['None',])
-            if type(conditions) != list: raise RuntimeError("El valor del arg 'condiciones' tiene que ser una lista.")
-            
-            if len(conditions) == 1 and conditions[0] == 'None': conditions = ''
-            elif len(conditions) == 1: conditions = conditions[0]
-            elif len(conditions) > 1: conditions = ' '.join(conditions)
-            else: raise RuntimeError("El valor del arg 'condiciones' no puede estar vacio. Tiene que tener una lista con las condiciones tipo SQL para procesar o, en su defecto, omitir arg para no condicionar la consulta.")
-
-            # Tipo Orden
-            orden = data.get('tipo_orden',dict())
-            if type(orden) != dict: raise RuntimeError("El valor del arg 'tipo_orden' tiene que ser un diccionario con el nombre de la columna como key y si es 'asc' o 'desc' como valor.")
-            
-            if len(orden) > 0:
-                texto = " ORDER BY "
-                index = 0
-                for key,value in orden.items():
-                    if not(value in ['asc','desc']): raise RuntimeError(f"Dentro del valor del arg 'tipo_orden', para la columna '{key}', no se puede ordenar por '{value}', tiene que ser 'asc' o 'desc'.")
-                    
-                    if index == 0: texto += f"{key} {value.upper()}"
-                    elif index > 0: texto += f", {key} {value.upper()}"
-                    
-                    index += 1
-                orden = texto
-            else: orden = ""
-
-            # Registros
-            registros = data.get('registros',-1)
-            if (type(registros) != int) or registros < -1: raise KeyError("El valor del arg 'registros' tiene que ser un entero positivo.")
-
-            if registros == -1: registros = ''
-            else: registros = f' LIMIT {registros}'
-
             # ===== Consulta BD
-            query = f"SELECT {cols} FROM {tb_name} {conditions}{orden}{registros};"
-            result = self.db.fetch_all(db_name,query)
+            tablas_query = "SELECT name FROM sqlite_master WHERE type='table';"
+            tablas = self.db.fetch_all(db_name, tablas_query)
+
+            resultado = {}
+
+            for tabla in tablas:
+                nombre_tabla = tabla[0]
+                if nombre_tabla == 'sqlite_sequence': continue
+
+                columnas_query = f"PRAGMA table_info('{nombre_tabla}');"
+                columnas = self.db.fetch_all(db_name, columnas_query)
+
+                # Convertimos a un formato tipo diccionario
+                columnas_resultado = [
+                    {"column_name": col[1], "data_type": col[2]}  # name y type
+                    for col in columnas
+                ]
+                resultado[nombre_tabla] = columnas_resultado
 
             # ===== Confirmación
-            return {"status":"fetched!","query":query,"result":result}, 200
+            return {"status":"fetched!","tablas": resultado}, 200
         
         # ===== Manejor de errores
-        except KeyError as ex: return {"status":"failed!","reason":f"The key {ex} was not in request."}, 400
+        except KeyError as ex: return {"status":"failed from Tables!","reason":f"The key {ex} was not in request."}, 400
 
-        except RuntimeError as ex: return {"status":"failed","reason":f"{ex}"}, 400
+        except RuntimeError as ex: return {"status":"failed from Tables!","reason":f"{ex}"}, 400
 
-        except Exception as ex: return {"status":"failed!","reason":f"{ex}"}, 500
+        except Exception as ex: return {"status":"failed from Tables!","reason":f"{ex}"}, 500
 
     def post(self):
         try:
@@ -111,8 +79,8 @@ class Tables(Resource):
             return {"status":"created!","query":query}, 201
 
         # ===== Manejor de errores
-        except KeyError as ex: return {"status":"failed!","reason":f"Falta la clave: {ex}"}, 400
-        except Exception as ex: return {"status":"failed!","reason":f"{ex}"}, 500
+        except KeyError as ex: return {"status":"failed from Tables!","reason":f"Falta la clave: {ex}"}, 400
+        except Exception as ex: return {"status":"failed from Tables!","reason":f"{ex}"}, 500
 
     def patch(self):
         try:
@@ -168,8 +136,8 @@ class Tables(Resource):
             return {"status":"updated!","query":query}, 200
 
         # ===== Manejor de errores
-        except KeyError as ex: return {"status":"failed!","reason":f"Falta la clave: {ex}"}, 400
-        except Exception as ex: return {"status":"failed!","reason":f"{ex}"}, 500
+        except KeyError as ex: return {"status":"failed from Tables!","reason":f"Falta la clave: {ex}"}, 400
+        except Exception as ex: return {"status":"failed from Tables!","reason":f"{ex}"}, 500
 
     def delete(self):
         try:
@@ -189,5 +157,5 @@ class Tables(Resource):
             return {"status":"deleted!","query":query}, 200
 
         # ===== Manejor de errores
-        except KeyError as ex: return {"status":"failed!","reason":f"Falta la clave: {ex}"}, 400
-        except Exception as ex: return {"status":"failed!","reason":f"{ex}"}, 500
+        except KeyError as ex: return {"status":"failed from Tables!","reason":f"Falta la clave: {ex}"}, 400
+        except Exception as ex: return {"status":"failed from Tables!","reason":f"{ex}"}, 500

@@ -1,14 +1,8 @@
 import sqlite3
 import os
 import subprocess
-from typing import List, Tuple, Any
+from typing import List, Union, Tuple, Any, Dict
 
-# =============== RUTAS ===============
-location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
-
-RCLONE_BIN = os.path.join(location_path, "Files", "Temp", "installation", "rclone")
-RCLONE_CONFIG = os.path.join(location_path, "Files", "Temp", "config", "rclone", "rclone.conf")
-data_dir = os.path.join(location_path, "Files", "Data")
 
 class DatabaseManager:
     def __init__(self) -> None:
@@ -18,75 +12,62 @@ class DatabaseManager:
 
         self.location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 
-
     # =============== MÉTODOS PRIVADOS ===============
-    def __upload_db_to_drive(self,db_name:str) -> None:
-        """
-        Sube la base de datos a Google Drive después de cada modificación.
-        """
-        # try:
-        path = os.path.join(
-            self.location_path,
-            'Files',
-            'Data',
-            db_name
-        )
-        result = subprocess.run(
-            [RCLONE_BIN, '--config', RCLONE_CONFIG, "copy", path, "drive:/UPY/Estancias_Enero_2025/cedrus_db",'--update'],
-            capture_output=True,
-            text=True,
-            cwd=self.location_path
-        )
-        if result.returncode != 0:
-            raise RuntimeError(f"Wtf checa qpd con el log: {result.stdout.strip()}/******/Wtf checa qpd con el detail: {result.stderr.strip()}")
-
-        return "Base de datos subida a Google Drive correctamente."
-        
-        # except Exception as e:
-        #     raise RuntimeError(f"Error al subir la base de datos con Rclone, Saltando proceso: {e}")
-
     def __connect(self,db_name) -> sqlite3.Connection:
         """
         Crea y devuelve una conexión a la base de datos.
         """
-        # try:
-        path = os.path.join(
-            self.location_path,
-            'Files',
-            'Data',
-            db_name
-        )
-        return sqlite3.connect(path, timeout=10, check_same_thread=False)
+        try:
+            path = os.path.join(
+                self.location_path,
+                'Files',
+                'Data',
+                db_name
+            )
+            return sqlite3.connect(path, timeout=10, check_same_thread=False)
         
-        # except sqlite3.Error as e:
-        #     raise RuntimeError(f"Error al conectar a la base de datos: {e}")
+        except Exception as ex:
+            raise Exception(f"Fallo DatabaseManager desde __connect debido a: /*{ex}*/")
 
     # =============== MÉTODOS PUBLICOS ===============
     def execute_query(self, db_name:str, query: str, params: Tuple[Any, ...] = ()) -> None:
         """
         Ejecuta una consulta SQL (INSERT, UPDATE, DELETE) y sube la BD a Google Drive.
         """
-        # try:
-        conn:sqlite3.Connection = self.__connect(db_name)
-        cursor = conn.cursor()
-        cursor.execute(query, params)
-        conn.commit()
-        conn.close()
-        self.__upload_db_to_drive(db_name)
-        # except Exception as ex:
-        #     raise ex
-
-    def fetch_all(self, db_name:str, query: str, params: Tuple[Any, ...] = ()) -> List[Tuple[Any, ...]]:
+        try:
+            with self.__connect(db_name) as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, params)
+                conn.commit()
+        except Exception as ex:
+            raise Exception(f"Fallo DatabaseManager desde execute_query debido a: /*{ex}*/")
+    
+    def fetch_all(self, db_name: str, query: str, params: Tuple[Any, ...] = (), as_dict: bool = False) -> List[Union[Tuple[Any, ...], Dict[str, Any]]]:
         """
         Ejecuta una consulta SELECT y devuelve todos los resultados.
+        Si as_dict es True, devuelve los resultados como diccionarios.
         """
-        # try:
-        conn:sqlite3.Connection = self.__connect(db_name)
-        cursor = conn.cursor()
-        cursor.execute(query, params)
-        results = cursor.fetchall()
-        conn.close()
-        return results
-        # except Exception as ex:
-        #     raise ex
-    
+        try:
+            with self.__connect(db_name) as conn:
+                if as_dict:
+                    conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                cursor.execute(query, params)
+                results = cursor.fetchall()
+            if as_dict:
+                return [dict(row) for row in results]
+            return results
+        except Exception as ex:
+            raise Exception(f"Fallo DatabaseManager desde fetch_all debido a: /*{ex}*/")
+
+    def execute_many(self, db_name: str, query: str, values: List[Tuple[Any, ...]]) -> None:
+        """
+        Ejecuta una consulta SQL en múltiples registros (INSERT, UPDATE, etc.) y sube la BD.
+        """
+        try:
+            with self.__connect(db_name) as conn:
+                cursor = conn.cursor()
+                cursor.executemany(query, values)
+                conn.commit()
+        except Exception as ex:
+            raise Exception(f"Fallo DatabaseManager desde execute_many debido a: /*{ex}*/")

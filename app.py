@@ -7,7 +7,8 @@ from flask_cors import CORS
 # ===== General
 from Files.Scripts.python.scheduler.inactivity_tracker import update_last_access
 from Files.Scripts.python.endpoints.validar_servicio import Start_Rclone
-from Files.Scripts.python.endpoints.General.tablas import Tables
+from Files.Scripts.python.endpoints.tablas import Tables
+from Files.Scripts.python.endpoints.registros import Registers
 
 
 # ===== Validaciones iniciales
@@ -29,16 +30,20 @@ def before_request():
 
 # ===== Endpoints
 # General
-api.add_resource(Tables,       '/general/tables', endpoint = 'general_tables')
+api.add_resource(Tables,     '/general/tables', endpoint = 'general_tables')
+api.add_resource(Registers,  '/general/registers', endpoint = 'general_registers')
 
 # Business
-api.add_resource(Tables,       '/business/tables', endpoint = 'business_tables')
+api.add_resource(Tables,     '/business/tables', endpoint = 'business_tables')
+api.add_resource(Registers,  '/business/registers', endpoint = 'business_registers')
 
 # Chat
-api.add_resource(Tables,       '/chat/tables', endpoint = 'chat_tables')
+api.add_resource(Tables,     '/chat/tables', endpoint = 'chat_tables')
+api.add_resource(Registers,  '/chat/registers', endpoint = 'chat_registers')
 
 # Web
-api.add_resource(Tables,       '/web/tables', endpoint = 'web_tables')
+api.add_resource(Tables,     '/web/tables', endpoint = 'web_tables')
+api.add_resource(Registers,  '/web/registers', endpoint = 'web_registers')
 
 
 

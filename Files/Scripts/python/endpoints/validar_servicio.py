@@ -16,13 +16,13 @@ class Start_Rclone:
             )
 
             if inst_result.returncode != 0:
-                return {
-                    "status": "failed",
-                    "reason": "Rclone installation script failed.",
-                    "details": inst_result.stderr.strip(),
-                    "log": inst_result.stdout.strip(),
-                    "location_path": location_path
-                }, 500
+                raise RuntimeError("\n".join([
+                    "status: failed",
+                    "reason: Rclone installation script failed.",
+                    f"details:  {inst_result.stderr.strip()}",
+                    f"log: {inst_result.stdout.strip()}",
+                    f"location_path: {location_path}"
+                ]))
 
             # ===== Scripts de Descarga
             down_script_path = os.path.abspath(os.path.join(location_path, 'Files','Scripts','bash','download_dbs.sh'))
@@ -41,23 +41,14 @@ class Start_Rclone:
                     with open(config_path,'r') as file:
                         config_str = file.read()
 
-                return {
-                    "status": "failed",
-                    "reason": "Download Databases script failed.",
-                    ".config": config_str,
-                    "details": down_result.stderr.strip(),
-                    "log": down_result.stdout.strip(),
-                    "location_path": location_path
-                }, 500
+                raise RuntimeError('\n'.join(
+                    "status: failed",
+                    "reason: Download Databases script failed.",
+                    f"config: {config_str}",
+                    f"details: {down_result.stderr.strip()}",
+                    f"log: {down_result.stdout.strip()}",
+                    f"location_path: {location_path}"
+                ))
 
-            # ===== Confirmacion
-            return {
-                "status": "Rclone installed and configured!",
-                "log": inst_result.stdout.strip(),
-                "base_dir": f"{os.listdir(location_path)}",
-                "data_dir": f"{os.listdir(os.path.join(location_path,'Files','Data'))}",
-                "temp_dir": f"{os.listdir(os.path.join(location_path,'Files','Temp'))}",
-            }, 200
-
-        except Exception as ex: return {"status": "failed!", "reason": str(ex)}, 500
+        except Exception as ex: return {"status": "failed from Start_Rclone!", "reason": str(ex)}, 500
 

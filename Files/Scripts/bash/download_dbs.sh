@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RCLONE_BIN="$SCRIPT_DIR/../../Temp/installation/rclone"
-RCLONE_CONFIG="$SCRIPT_DIR/../../Temp/.config/rclone/rclone.conf"
+RCLONE_CONFIG="$SCRIPT_DIR/../../Temp/config/rclone/rclone.conf"
 RCLONE_REMOTE_NAME="drive"
 DRIVE_FOLDER="/UPY/Estancias_Enero_2025/cedrus_db"
 LOCAL_DEST="$SCRIPT_DIR/../../Data"

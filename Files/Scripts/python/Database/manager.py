@@ -3,6 +3,13 @@ import os
 import subprocess
 from typing import List, Tuple, Any
 
+# =============== RUTAS ===============
+location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+
+RCLONE_BIN = os.path.join(location_path, "Files", "Temp", "installation", "rclone")
+RCLONE_CONFIG = os.path.join(location_path, "Files", "Temp", "config", "rclone", "rclone.conf")
+data_dir = os.path.join(location_path, "Files", "Data")
+
 class DatabaseManager:
     def __init__(self) -> None:
         """
@@ -25,7 +32,7 @@ class DatabaseManager:
             db_name
         )
         result = subprocess.run(
-            ["rclone", "copy", path, "[drive]"],
+            [RCLONE_BIN, '--config', RCLONE_CONFIG, "copy", path, "drive:/UPY/Estancias_Enero_2025/cedrus_db",'--update'],
             capture_output=True,
             text=True,
             cwd=self.location_path

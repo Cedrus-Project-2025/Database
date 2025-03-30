@@ -44,4 +44,4 @@ def is_time_to_backup():
     with open(updt_file_path,'r') as file: update = file.read()
     update = True if update == 'True' else False
 
-    return bool((diff > timedelta(minutes=4)) and update)
+    return bool((diff > timedelta(minutes=1)) and update)

@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from dotenv import load_dotenv
 from flask import Flask
 from flask_restful import Api
@@ -13,21 +13,22 @@ from Files.Scripts.python.endpoints.General.tablas import Tables
 # ===== Validaciones iniciales
 load_dotenv()
 sys.stdout = sys.stderr
+location_path = os.path.dirname(__file__)
 
 # ===== Configuracion API
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-Start_Rclone().get()
+Start_Rclone().start()
 
 # ===== Middleware para actualizar la hora del último acceso en cada request
 @app.before_request
 def before_request():
     update_last_access()
+    
 
 # ===== Endpoints
 # General
-api.add_resource(Start_Rclone, '/start', endpoint = 'start')
 api.add_resource(Tables,       '/general/tables', endpoint = 'general_tables')
 
 # Business

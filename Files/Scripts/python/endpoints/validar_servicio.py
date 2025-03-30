@@ -1,10 +1,9 @@
 import subprocess, os
-from flask_restful import Resource
 
 location_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))))
 
-class Start_Rclone(Resource):
-    def get(self):
+class Start_Rclone:
+    def start(self):
         try:
 
             # ===== Scripts de Instalacion

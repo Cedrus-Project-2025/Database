@@ -5,9 +5,9 @@ from inactivity_tracker import is_time_to_backup
 location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
 
 RCLONE_BIN = os.path.join(location_path, "Files", "Temp", "installation", "rclone")
-RCLONE_CONFIG = os.path.join(location_path, "Files", "Temp", ".config", "rclone", "rclone.conf")
-updt_file_path = os.path.join(location_path, "Files", "Temp", "update_file.txt")
+RCLONE_CONFIG = os.path.join(location_path, "Files", "Temp", "config", "rclone", "rclone.conf")
 data_dir = os.path.join(location_path, "Files", "Data")
+updt_file_path = os.path.join(location_path, "Files", "Temp", "update_file.txt")
 
 
 

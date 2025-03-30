@@ -5,7 +5,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Ahora installation y .config están dentro de Files/Temp/
 INSTALL_DIR="$SCRIPT_DIR/../../Temp/installation"
 RCLONE_BIN="$INSTALL_DIR/rclone"
-CONFIG_DIR="$SCRIPT_DIR/../../Temp/.config/rclone"
+CONFIG_DIR="$SCRIPT_DIR/../../Temp/config/rclone"
 RCLONE_CONFIG="$CONFIG_DIR/rclone.conf"
 
 echo "Instalando Rclone en $INSTALL_DIR..."

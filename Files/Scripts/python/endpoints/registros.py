@@ -77,7 +77,7 @@ class Registers(Resource):
 
             # ===== Consulta BD
             query = f"SELECT {cols} FROM {tb_name} {conditions}{orden}{registros};"
-            result = self.db.fetch_all(db_name,query)
+            result = self.db.fetch_all(db_name,query,as_dict=True)
 
             # ===== Confirmación
             return {"status":"fetched!","query":query,"result":result}, 200

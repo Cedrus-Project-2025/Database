@@ -46,6 +46,3 @@ api.add_resource(Tables,     '/web/tables', endpoint = 'web_tables')
 api.add_resource(Registers,  '/web/registers', endpoint = 'web_registers')
 
 
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)

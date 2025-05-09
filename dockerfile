@@ -1,5 +1,5 @@
 # ========== Comando para crear y levantar docker
-# clear; docker build -t cedrus-db .; docker run --name CedusDB --env-file .env -p 10000:10000 cedrus-db
+# clear; docker build -t permont-db .; docker run --name PermontDB -p 10000:10000 permont-db
 # ========== 
 
 

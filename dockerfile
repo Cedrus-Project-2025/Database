@@ -23,8 +23,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Dar permisos a los scripts
-RUN chmod +x /app/Files/Scripts/bash/start.sh \
-    && chmod +x /app/Files/Scripts/bash/install_rclone.sh
+RUN chmod +x /app/Files/Scripts/bash/start.sh
 
 # Exponer el puerto para Render
 EXPOSE 10000

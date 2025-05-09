@@ -7,4 +7,4 @@ mkdir -p ./Files/Data
 
 # Lanzar la API con Gunicorn
 echo "🚀 Iniciando la API..."
-gunicorn -w 4 -b 0.0.0.0:10000 app:app
+gunicorn -w 4 -b 0.0.0.0:503 app:app

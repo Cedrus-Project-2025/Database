@@ -6,7 +6,6 @@ from flask_cors import CORS
 
 # ===== General
 from Files.Scripts.python.scheduler.inactivity_tracker import update_last_access
-from Files.Scripts.python.endpoints.validar_servicio import Start_Rclone
 from Files.Scripts.python.endpoints.tablas import Tables
 from Files.Scripts.python.endpoints.registros import Registers
 
@@ -20,7 +19,6 @@ location_path = os.path.dirname(__file__)
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
-Start_Rclone().start()
 
 # ===== Middleware para actualizar la hora del último acceso en cada request
 @app.before_request

@@ -27,6 +27,3 @@ RUN chmod +x /app/Files/Scripts/bash/start.sh
 
 # Exponer el puerto para Render
 EXPOSE 503
-
-# Comando por defecto
-CMD ["./Files/Scripts/bash/start.sh"]

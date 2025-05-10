@@ -3,9 +3,9 @@
 # ========== 
 
 services:
-  permont-web:
+  permont-db:
     build: .
-    container_name: PermontWEB
+    container_name: PermontDB
     ports:
       - "503:503"
     volumes:

@@ -1,5 +1,5 @@
 # ========== Comando para crear y levantar docker
-# clear; docker build -t permont-db . && docker run --name PermontDB -p 503:503 permont-db
+# clear; docker build -t permont-db . && docker run -d --name PermontDB -p 503:503 permont-db
 # ========== 
 
 

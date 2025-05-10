@@ -1,0 +1,12 @@
+# ========== Comando para crear y levantar docker
+# clear; docker compose up --build -d
+# ========== 
+
+services:
+  permont-web:
+    build: .
+    container_name: PermontWEB
+    ports:
+      - "501:501"
+    volumes:
+      - ./Files/Data:/app/Files/Data

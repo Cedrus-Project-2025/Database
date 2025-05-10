@@ -1,5 +1,5 @@
 # ========== Comando para crear y levantar docker
-# clear; docker build -t cedrus-db .; docker run --name CedusDB --env-file .env -p 10000:10000 cedrus-db
+# clear; docker build -t permont-db . && docker run --name PermontDB -p 503:503 permont-db
 # ========== 
 
 
@@ -23,11 +23,10 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Dar permisos a los scripts
-RUN chmod +x /app/Files/Scripts/bash/start.sh \
-    && chmod +x /app/Files/Scripts/bash/install_rclone.sh
+RUN chmod +x /app/Files/Scripts/bash/start.sh
 
 # Exponer el puerto para Render
-EXPOSE 10000
+EXPOSE 503
 
 # Comando por defecto
 CMD ["./Files/Scripts/bash/start.sh"]

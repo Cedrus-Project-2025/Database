@@ -18,7 +18,7 @@ location_path = os.path.dirname(__file__)
 # ===== Configuracion API
 app = Flask(__name__)
 CORS(app)
-api = Api(app)
+api = Api(app,prefix='/api-db')
 
 # ===== Middleware para actualizar la hora del último acceso en cada request
 @app.before_request

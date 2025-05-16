@@ -1,12 +1,37 @@
 # ========== Comando para crear y levantar docker
-# clear; docker compose up --build -d
+# clear; docker compose up --build
 # ========== 
 
 services:
-  permont-web:
-    build: .
-    container_name: PermontWEB
+  permontdb_postgres:
+    build: ./database
+    container_name: permontdb_postgres
+    restart: unless-stopped
+    env_file: .env
     ports:
-      - "501:501"
+      - "5432:5432"
     volumes:
-      - ./Files/Data:/app/Files/Data
+      - postgres_data_permontdb:/var/lib/postgresql/data
+      - ./database/create_schemas:/database/create_schemas
+      - ./database/fill_schemas:/database/fill_schemas
+    networks:
+      - backend_net
+
+  # PermontDB_API:
+  #   build: ./api
+  #   container_name: permontdb_api
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - PermontDB_Postgres
+  #   networks:
+  #     - backend_net
+
+volumes:
+  postgres_data_permontdb:
+
+networks:
+  backend_net:
+    driver: bridge

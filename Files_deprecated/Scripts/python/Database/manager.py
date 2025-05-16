@@ -1,6 +1,5 @@
 import sqlite3
 import os
-import subprocess
 from typing import List, Union, Tuple, Any, Dict
 
 

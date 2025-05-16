@@ -2,10 +2,10 @@ import os, sys
 from flask import request
 from flask_restful import Resource
 
-location_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))))
+location_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(location_path)
 
-from Files.Scripts.python.Database.manager import DatabaseManager
+from python.Database.manager import DatabaseManager
 
 class Registers(Resource):
     # =============== MÉTODOS PRIVADOS ===============
